@@ -5,7 +5,6 @@ import com.adrianfilip.ziosample.domain.model.EmployeeRepository
 import com.adrianfilip.ziosample.domain.model.Employee
 import com.adrianfilip.ziosample.domain.model.EmployeeRepository.CreateEmployeeFailure
 
-//api
 object EmployeeApi {
 
   def create(req: CreateEmployeeRequest): ZIO[EmployeeRepository, CreateEmployeeFailure, Employee] = {
