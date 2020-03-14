@@ -11,9 +11,6 @@ final case class Employee private (val id: String, val firstName: String, val la
 
 object Employee {
 
-  /**
-    * id: (Adrian, Filip) => afilip
-    */
   def apply(firstName: String, lastName: String): Option[Employee] =
     Try(firstName.head.toLower + lastName.substring(0, 5).toLowerCase).toOption
       .map(id => Employee(id, firstName, lastName))
