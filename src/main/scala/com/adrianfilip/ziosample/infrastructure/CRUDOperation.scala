@@ -26,16 +26,21 @@ object CRUDOperation {
     val index: Int = 5
   }
 
+  final object ExitApp extends CRUDOperation {
+    val index: Int = 6
+  }
+
   def selectOperation(selection: String): Option[CRUDOperation] = Try(Integer.parseInt(selection)).toOption match {
     case None => None
     case Some(index) =>
       index match {
-        case Create.index => Some(Create)
-        case Read.index   => Some(Read)
-        case Update.index => Some(Update)
-        case Delete.index => Some(Delete)
-        case GetAll.index => Some(GetAll)
-        case _            => None
+        case Create.index  => Some(Create)
+        case Read.index    => Some(Read)
+        case Update.index  => Some(Update)
+        case Delete.index  => Some(Delete)
+        case GetAll.index  => Some(GetAll)
+        case ExitApp.index => Some(ExitApp)
+        case _             => None
       }
   }
 }
