@@ -30,9 +30,7 @@ object EmployeeRepository {
 
   sealed trait PersistenceFailure
   object PersistenceFailure {
-    // final case class EmployeeAlreadyExists(id: String)            extends PersistenceFailure
     final case class UnexpectedPersistenceFailure(err: Throwable) extends PersistenceFailure
-    // final case class EmployeeDoesNotExist(id: String)             extends PersistenceFailure
   }
 
   //   accessor methods
