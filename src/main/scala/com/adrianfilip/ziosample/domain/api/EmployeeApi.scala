@@ -35,12 +35,12 @@ object EmployeeApi {
   def delete(id: String): ZIO[EmployeeRepository, PersistenceFailure, Unit] =
     EmployeeRepository.delete(id)
 
-  case class CreateEmployeeRequest(
+  final case class CreateEmployeeRequest(
     val firstName: String,
     val lastName: String
   )
 
-  case class UpdateEmployeeRequest(
+  final case class UpdateEmployeeRequest(
     val id: String,
     val firstName: String,
     val lastName: String

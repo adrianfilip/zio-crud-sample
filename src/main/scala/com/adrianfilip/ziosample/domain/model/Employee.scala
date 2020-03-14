@@ -6,7 +6,7 @@ import zio.ZIO
 import zio.Has
 
 //id: Adrian Filip => afilip
-case class Employee(val id: String, val firstName: String, val lastName: String)
+final case class Employee(val id: String, val firstName: String, val lastName: String)
 
 object EmployeeRepository {
 
