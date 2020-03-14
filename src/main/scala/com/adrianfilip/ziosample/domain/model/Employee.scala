@@ -4,9 +4,18 @@ import zio.IO
 import zio.Task
 import zio.ZIO
 import zio.Has
+import scala.util.Try
+import com.adrianfilip.ziosample.domain.model.EmployeeRepository.PersistenceFailure._
 
 //id: Adrian Filip => afilip
-final case class Employee(val id: String, val firstName: String, val lastName: String)
+final case class Employee private (val id: String, val firstName: String, val lastName: String)
+
+object Employee {
+  def apply(firstName: String, lastName: String): Option[Employee] =
+    Try(firstName.head.toLower + lastName.substring(0, 5).toLowerCase).toOption
+      .map(id => Employee(id, firstName, lastName))
+
+}
 
 object EmployeeRepository {
 
@@ -20,9 +29,11 @@ object EmployeeRepository {
   }
 
   sealed trait PersistenceFailure
-  final case class EmployeeAlreadyExists(id: String)            extends PersistenceFailure
-  final case class UnexpectedPersistenceFailure(err: Throwable) extends PersistenceFailure
-  final case class EmployeeDoesNotExist(id: String)             extends PersistenceFailure
+  object PersistenceFailure {
+    // final case class EmployeeAlreadyExists(id: String)            extends PersistenceFailure
+    final case class UnexpectedPersistenceFailure(err: Throwable) extends PersistenceFailure
+    // final case class EmployeeDoesNotExist(id: String)             extends PersistenceFailure
+  }
 
   //   accessor methods
   def save(
