@@ -14,6 +14,9 @@ object EmployeeApi {
     EmployeeRepository.create(employee)
   }
 
+  def getAll(): ZIO[Has[EmployeeRepository.Service], Throwable, Seq[Employee]] =
+    EmployeeRepository.getAll()
+
   case class CreateEmployeeRequest(
     val firstName: String,
     val lastName: String
