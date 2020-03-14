@@ -10,36 +10,32 @@ case class Employee(val id: String, val firstName: String, val lastName: String)
 
 object EmployeeRepository {
 
+  type EmployeeRepository = Has[EmployeeRepository.Service]
+
   trait Service {
-    def create(employee: Employee): IO[CreateEmployeeFailure, Employee]
-    def get(id: String): Task[Option[Employee]]
-    def getAll(): Task[Seq[Employee]]
-    def delete(id: String): IO[DeleteEmployeeFailure, Unit]
+    def save(employee: Employee): IO[PersistenceFailure, Employee]
+    def get(id: String): IO[PersistenceFailure, Option[Employee]]
+    def getAll(): IO[PersistenceFailure, Seq[Employee]]
+    def delete(id: String): IO[PersistenceFailure, Unit]
   }
 
-  sealed trait CreateEmployeeFailure
-  final case class EmployeeAlreadyExists(id: String)         extends CreateEmployeeFailure
-  final case class UnexpectedCreationFailure(err: Throwable) extends CreateEmployeeFailure
-
-  sealed trait GetEmployeeFailure
-  final case class UnexpectedGetEmployeeFailure(id: String, err: Throwable) extends GetEmployeeFailure
-
-  sealed trait DeleteEmployeeFailure
-  final case class EmployeeDoesNotExist(id: String)          extends DeleteEmployeeFailure
-  final case class UnexpectedDeletionFailure(err: Throwable) extends DeleteEmployeeFailure
+  sealed trait PersistenceFailure
+  final case class EmployeeAlreadyExists(id: String)            extends PersistenceFailure
+  final case class UnexpectedPersistenceFailure(err: Throwable) extends PersistenceFailure
+  final case class EmployeeDoesNotExist(id: String)             extends PersistenceFailure
 
   //   accessor methods
-  def create(
+  def save(
     employee: Employee
-  ): ZIO[Has[EmployeeRepository.Service], EmployeeRepository.CreateEmployeeFailure, Employee] =
-    ZIO.accessM(_.get.create(employee))
+  ): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Employee] =
+    ZIO.accessM(_.get.save(employee))
 
-  def get(id: String): ZIO[Has[EmployeeRepository.Service], Throwable, Option[Employee]] =
+  def get(id: String): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Option[Employee]] =
     ZIO.accessM(_.get.get(id))
 
-  def getAll(): ZIO[Has[EmployeeRepository.Service], Throwable, Seq[Employee]] =
+  def getAll(): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Seq[Employee]] =
     ZIO.accessM(_.get.getAll())
 
-  def delete(id: String): ZIO[Has[EmployeeRepository.Service], EmployeeRepository.DeleteEmployeeFailure, Unit] =
+  def delete(id: String): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Unit] =
     ZIO.accessM(_.get.delete(id))
 }
