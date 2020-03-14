@@ -13,6 +13,7 @@ import com.adrianfilip.ziosample.domain.model.EmployeeRepository.EmployeeReposit
 import com.adrianfilip.ziosample.domain.model.EmployeeRepository
 import com.adrianfilip.ziosample.infrastructure.environments.EmployeeRepositoryEnv
 import zio.ZLayer
+import zio.Task
 
 object Application extends zio.App {
 
@@ -20,8 +21,13 @@ object Application extends zio.App {
 
   val localApplicationEnvironment = Console.live ++ EmployeeRepositoryEnv.inMemory
 
-  def run(args: List[String]): ZIO[zio.ZEnv, Nothing, Int] =
-    program().provideLayer(localApplicationEnvironment)
+  def run(args: List[String]): ZIO[zio.ZEnv, Nothing, Int] = {
+    val profile = Try(args.head).getOrElse("")
+
+    if (profile == "local") program().provideLayer(localApplicationEnvironment)
+    else putStrLn(s"Unsupported profile $profile") *> ZIO.succeed(1)
+
+  }
 
   def program(): ZIO[ApplicationEnvironment, Nothing, Int] =
     (for {
