@@ -7,10 +7,17 @@ import zio.Has
 import scala.util.Try
 import com.adrianfilip.ziosample.domain.model.EmployeeRepository.PersistenceFailure._
 
-//id: Adrian Filip => afilip
 final case class Employee private (val id: String, val firstName: String, val lastName: String)
 
 object Employee {
+
+  /**
+    * id: (Adrian, Filip) => afilip
+    *
+    * @param firstName
+    * @param lastName
+    * @return
+    */
   def apply(firstName: String, lastName: String): Option[Employee] =
     Try(firstName.head.toLower + lastName.substring(0, 5).toLowerCase).toOption
       .map(id => Employee(id, firstName, lastName))
