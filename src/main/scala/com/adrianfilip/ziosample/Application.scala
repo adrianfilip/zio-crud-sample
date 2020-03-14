@@ -32,11 +32,11 @@ object Application extends zio.App {
     } yield ()) *> ZIO.never
 
   def dispatch(operation: CRUDOperation): ZIO[Console, Throwable, Unit] = operation match {
-    case Create(_) => Controller.create
-    case Read(_)   => Controller.read
-    case Update(_) => Controller.update
-    case Delete(_) => Controller.delete
-    case GetAll(_) => Controller.getAll
+    case Create => Controller.create
+    case Read   => Controller.read
+    case Update => Controller.update
+    case Delete => Controller.delete
+    case GetAll => Controller.getAll
   }
 
 }
