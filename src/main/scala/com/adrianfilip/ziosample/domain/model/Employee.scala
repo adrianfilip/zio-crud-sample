@@ -27,15 +27,15 @@ object EmployeeRepository {
   //   accessor methods
   def save(
     employee: Employee
-  ): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Employee] =
+  ): ZIO[EmployeeRepository, PersistenceFailure, Employee] =
     ZIO.accessM(_.get.save(employee))
 
-  def get(id: String): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Option[Employee]] =
+  def get(id: String): ZIO[EmployeeRepository, PersistenceFailure, Option[Employee]] =
     ZIO.accessM(_.get.get(id))
 
-  def getAll(): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Seq[Employee]] =
+  def getAll(): ZIO[EmployeeRepository, PersistenceFailure, Seq[Employee]] =
     ZIO.accessM(_.get.getAll())
 
-  def delete(id: String): ZIO[Has[EmployeeRepository.Service], PersistenceFailure, Unit] =
+  def delete(id: String): ZIO[EmployeeRepository, PersistenceFailure, Unit] =
     ZIO.accessM(_.get.delete(id))
 }
