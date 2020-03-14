@@ -13,10 +13,6 @@ object Employee {
 
   /**
     * id: (Adrian, Filip) => afilip
-    *
-    * @param firstName
-    * @param lastName
-    * @return
     */
   def apply(firstName: String, lastName: String): Option[Employee] =
     Try(firstName.head.toLower + lastName.substring(0, 5).toLowerCase).toOption
