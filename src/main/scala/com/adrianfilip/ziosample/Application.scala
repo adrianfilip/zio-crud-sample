@@ -47,7 +47,7 @@ object Application extends zio.App {
                 case _ =>
                   dispatch(op)
                     .tapError(e => putStrLn(s"Failed with: $e"))
-                    .flatMap(s => putStrLn(s"Succeeded with $s")) *> program
+                    .flatMap(s => putStrLn(s"Succeeded with $s") *> program) orElse program
               }
             case None => putStrLn(s"$selection is not a valid selection, please try again!") *> program
           }
