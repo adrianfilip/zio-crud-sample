@@ -1,7 +1,7 @@
 1. You can start the app with:
 sbt "run local"
 
-3. You will be prompted to select an operartion to perform:
+3. You will be prompted to select an operation to perform:
 
 Please select next operation to perform:
 1 for Create
