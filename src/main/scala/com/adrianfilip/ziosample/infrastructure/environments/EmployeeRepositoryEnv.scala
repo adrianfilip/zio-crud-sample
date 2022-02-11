@@ -8,6 +8,6 @@ import com.adrianfilip.ziosample.infrastructure.persistence.EmployeeRepositoryIn
 
 object EmployeeRepositoryEnv {
   
-  val inMemory: Layer[Nothing, EmployeeRepository] = EmployeeRepositoryInMemory.layer
+  val inMemory: ULayer[EmployeeRepository] = EmployeeRepositoryInMemory.layer
 
 }

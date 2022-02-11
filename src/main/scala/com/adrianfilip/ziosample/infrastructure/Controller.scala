@@ -5,7 +5,6 @@ import Console.{printLine,readLine}
 import com.adrianfilip.ziosample.domain.model._
 import com.adrianfilip.ziosample.domain.api.EmployeeApi
 import com.adrianfilip.ziosample.domain.api.EmployeeApi.{CreateEmployeeRequest,UpdateEmployeeRequest}
-import com.adrianfilip.ziosample.infrastructure.environments.EmployeeRepositoryEnv
 
 object Controller {
 
