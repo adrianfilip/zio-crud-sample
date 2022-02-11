@@ -1,11 +1,7 @@
 package com.adrianfilip.ziosample.domain.model
 
-import zio.IO
-import zio.Task
-import zio.ZIO
-import zio.Has
+import zio._
 import scala.util.Try
-import com.adrianfilip.ziosample.domain.model.EmployeeRepository.PersistenceFailure._
 
 final case class Employee private (val id: String, val firstName: String, val lastName: String)
 
@@ -17,34 +13,22 @@ object Employee {
 
 }
 
-object EmployeeRepository {
-
-  type EmployeeRepository = Has[EmployeeRepository.Service]
-
-  trait Service {
+trait EmployeeRepository {
+  import EmployeeRepository.PersistenceFailure
     def save(employee: Employee): IO[PersistenceFailure, Employee]
     def get(id: String): IO[PersistenceFailure, Option[Employee]]
     def getAll(): IO[PersistenceFailure, Seq[Employee]]
     def delete(id: String): IO[PersistenceFailure, Unit]
-  }
+}
+
+object EmployeeRepository {
+  def save(employee: Employee) = ZIO.serviceWithZIO[EmployeeRepository](_.save(employee))
+  def get(id: String) = ZIO.serviceWithZIO[EmployeeRepository](_.get(id))
+  def getAll() = ZIO.serviceWithZIO[EmployeeRepository](_.getAll())
+  def delete(id: String) = ZIO.serviceWithZIO[EmployeeRepository](_.delete(id))
 
   sealed trait PersistenceFailure
   object PersistenceFailure {
     final case class UnexpectedPersistenceFailure(err: Throwable) extends PersistenceFailure
   }
-
-  //   accessor methods
-  def save(
-    employee: Employee
-  ): ZIO[EmployeeRepository, PersistenceFailure, Employee] =
-    ZIO.accessM(_.get.save(employee))
-
-  def get(id: String): ZIO[EmployeeRepository, PersistenceFailure, Option[Employee]] =
-    ZIO.accessM(_.get.get(id))
-
-  def getAll(): ZIO[EmployeeRepository, PersistenceFailure, Seq[Employee]] =
-    ZIO.accessM(_.get.getAll())
-
-  def delete(id: String): ZIO[EmployeeRepository, PersistenceFailure, Unit] =
-    ZIO.accessM(_.get.delete(id))
 }

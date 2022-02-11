@@ -2,9 +2,7 @@ package com.adrianfilip.ziosample.domain.api
 
 import zio.ZIO
 import com.adrianfilip.ziosample.domain.model.Employee
-import zio.Has
 import com.adrianfilip.ziosample.domain.model.EmployeeRepository
-import com.adrianfilip.ziosample.domain.model.EmployeeRepository.EmployeeRepository
 import com.adrianfilip.ziosample.domain.model.EmployeeRepository.PersistenceFailure
 import com.adrianfilip.ziosample.domain.api.EmployeeApi.ValidationError._
 import com.adrianfilip.ziosample.domain.api.EmployeeApi.BusinessFailure._

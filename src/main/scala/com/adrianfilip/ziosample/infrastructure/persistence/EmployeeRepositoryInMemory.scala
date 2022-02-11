@@ -4,10 +4,9 @@ import com.adrianfilip.ziosample.domain.model.EmployeeRepository
 import com.adrianfilip.ziosample.domain.model.EmployeeRepository.PersistenceFailure
 import com.adrianfilip.ziosample.domain.model.EmployeeRepository.PersistenceFailure._
 import com.adrianfilip.ziosample.domain.model.Employee
-import zio.IO
-import zio.Task
+import zio._
 
-object EmployeeRepositoryInMemory extends EmployeeRepository.Service {
+case class EmployeeRepositoryInMemory() extends EmployeeRepository {
 
   private val db: java.util.HashMap[String, Employee] = new java.util.HashMap()
 
@@ -39,4 +38,8 @@ object EmployeeRepositoryInMemory extends EmployeeRepository.Service {
   //   IO.fail(EmployeeDoesNotExist(id))
   // }
 
+}
+
+object EmployeeRepositoryInMemory extends (() => EmployeeRepository) {
+  val layer: ULayer[EmployeeRepository] = EmployeeRepositoryInMemory.toLayer
 }
