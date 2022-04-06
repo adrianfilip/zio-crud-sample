@@ -41,5 +41,7 @@ case class EmployeeRepositoryInMemory() extends EmployeeRepository {
 }
 
 object EmployeeRepositoryInMemory extends (() => EmployeeRepository) {
-  val layer: ULayer[EmployeeRepository] = EmployeeRepositoryInMemory.toLayer
+  val layer: ULayer[EmployeeRepository] = 
+    ZLayer.fromFunction(_ => EmployeeRepositoryInMemory())
+    //EmployeeRepositoryInMemory.toLayer // Removed in ZIO 2.0.0-RC4
 }
