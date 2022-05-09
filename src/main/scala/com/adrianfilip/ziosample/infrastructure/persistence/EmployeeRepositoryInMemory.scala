@@ -11,37 +11,29 @@ case class EmployeeRepositoryInMemory() extends EmployeeRepository {
   private val db: java.util.HashMap[String, Employee] = new java.util.HashMap()
 
   override def save(employee: Employee): IO[PersistenceFailure, Employee] =
-    IO {
+    ZIO.attempt {
       db.put(employee.id, employee)
       employee
     }.mapError(UnexpectedPersistenceFailure(_))
 
- 
-
   override def get(id: String): IO[PersistenceFailure, Option[Employee]] =
-    IO(Option(db.get(id))).mapError(UnexpectedPersistenceFailure(_))
+    ZIO.attempt(Option(db.get(id))).mapError(UnexpectedPersistenceFailure(_))
 
   import collection.JavaConverters._
   override def getAll(): IO[PersistenceFailure, Seq[Employee]] =
-    IO(db.values().asScala.toSeq).mapError(UnexpectedPersistenceFailure(_))
+    ZIO.attempt(db.values().asScala.toSeq).mapError(UnexpectedPersistenceFailure(_))
 
   override def delete(id: String): IO[PersistenceFailure, Unit] =
-    IO {
+    ZIO.attempt {
       db.remove(id)
       ()
     }.mapError(e => UnexpectedPersistenceFailure(e))
 
-  // if (db.containsKey(id)) {
-  //   db.remove(id)
-  //   IO.succeed(())
-  // } else {
-  //   IO.fail(EmployeeDoesNotExist(id))
-  // }
-
 }
 
 object EmployeeRepositoryInMemory extends (() => EmployeeRepository) {
+
   val layer: ULayer[EmployeeRepository] = 
-    ZLayer.fromFunction(_ => EmployeeRepositoryInMemory())
+    ZLayer.fromFunction(() => EmployeeRepositoryInMemory())
     //EmployeeRepositoryInMemory.toLayer // Removed in ZIO 2.0.0-RC4
 }
