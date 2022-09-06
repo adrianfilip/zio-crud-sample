@@ -1,10 +1,10 @@
 name := "ziosample"
 
 organization := "adrianfilip"
-version := "0.0.1"
+version := "0.0.2"
 
-val zio_version   = "1.0.0-RC18-2"
-scalaVersion := "2.13.1"
+val zio_version   = "2.0.0-RC6"
+scalaVersion := "2.13.8"
 
 lazy val config = (project in file("."))
   .settings(

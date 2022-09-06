@@ -9,3 +9,6 @@ project/metals.sbt
 .idea
 coursier
 .DS_Store
+**/metals.sbt
+.vscode
+.bsp
